@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	core "github.com/afyi/socialcode/core"
+	core "github.com/afyi/lhwqcore/core"
 )
 
 var Usage = func() {
@@ -27,11 +27,13 @@ func main() {
 		fmt.Println("您的字符串加密结果是:")
 		fmt.Println("==============================================")
 		fmt.Println(core.Encode(string(args[1])))
+		fmt.Println()
 	case "d":
 		fmt.Println()
 		fmt.Println("您的字符串解密结果是:")
 		fmt.Println("==============================================")
 		fmt.Println(core.Decode(string(args[1])))
+		fmt.Println()
 	default:
 		Usage()
 	}

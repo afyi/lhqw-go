@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-var Keys [14]string = [14]string{"连翘", "银花", "麻黄", "苦杏仁", "石膏", "板蓝根", "贯众", "鱼腥草", "藿香", "大黄", "红景天", "薄荷脑", "甘草", "淀粉"}
+var Keys [14]string = [14]string{"连翘", "银花", "麻黄", "苦杏仁", "石膏", "板蓝根", "贯众", "鱼腥草", "红景天", "薄荷脑", "藿香", "大黄", "甘草", "淀粉"}
 
 // 编码
 func Encode(str string) string {
@@ -23,11 +23,10 @@ func Encode(str string) string {
 			ret = append(ret, url.QueryEscape(string(v)))
 		}
 	}
-	return hex2duo(strings.ToUpper(strings.Replace(strings.Join(ret, ""), "%", "", -1)))
+	return wordtohan(strings.ToUpper(strings.Replace(strings.Join(ret, ""), "%", "", -1)))
 }
 
-// 转成核心价值观
-func hex2duo(str string) string {
+func wordtohan(str string) string {
 	var duo []string
 	for _, v := range str {
 		n, _ := strconv.ParseInt(string(v), 16, 64)
@@ -43,42 +42,28 @@ func hex2duo(str string) string {
 }
 
 func Decode(str string) string {
-	//var splited []string
-	// 把字符串转成rune
-	var hex []int
 	for i, v := range Keys {
 		// 这里从字符串中返回加密串的数据，先找一次，如果没了，就说明整个串里都没这个数字
-		ind := strings.Index(str, v)
-		for ind > -1 {
-			end := ind + len(v)
-			if ind+len(v) > len(str) {
-				end = len(str)
-			}
-			str = fmt.Sprintf("%s,%d,%s", str[:ind], i, str[end:])
-			ind = strings.Index(str, v)
-		}
+		str = strings.Replace(str, v, fmt.Sprintf("%d,", i), -1)
 	}
-
-	numList := strings.Split(strings.Trim(strings.ReplaceAll(str, ",,", ","), ","), ",")
-	for _, v := range numList {
-		res, _ := strconv.Atoi(v)
-		hex = append(hex, res)
-	}
-	return duo2hex(hex)
+	return han2word(strings.Split(str[:len(str)-1], ","))
 }
 
-func duo2hex(hex []int) string {
+// 把对应的加密串返回成真实值
+func han2word(hex []string) string {
 	var ret []string
 	var num int // 用于判定当前循环次数
 	for i := 0; i < len(hex); i++ {
 		// 这是个临时值
 		tmp := 0
-		if hex[i] == 13 {
+		ind, _ := strconv.Atoi(hex[i])
+		if ind == 13 {
 			// 如果当前值=13，那么说明这个是个2位数，要么14，要么15，所以再取第后一位上的数字为当前值
 			i++
-			tmp = hex[i] + 13
+			ind, _ = strconv.Atoi(hex[i])
+			tmp = ind + 13
 		} else {
-			tmp = hex[i]
+			tmp = ind
 		}
 		if num&1 == 0 {
 			ret = append(ret, fmt.Sprintf("%%%X", tmp))
