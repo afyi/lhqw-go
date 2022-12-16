@@ -1,9 +1,21 @@
 package core
 
-/*func testEncode(t *testing.T) {
-	got := Encode("", ":")         // 程序输出的结果
-	want := []string{"a", "b", "c"}    // 期望的结果
-	if !reflect.DeepEqual(want, got) { // 因为slice不能比较直接，借助反射包中的方法比较
-		t.Errorf("expected:%v, got:%v", want, got) // 测试失败输出错误提示
+import (
+	"testing"
+)
+
+func TestEncode(t *testing.T) {
+	got := Encode("你好,lhqw")
+	want := "淀粉银花石膏大黄淀粉连翘藿香连翘淀粉银花板蓝根藿香板蓝根大黄淀粉连翘麻黄甘草贯众甘草贯众红景天鱼腥草银花鱼腥草鱼腥草"
+	if got != want {
+		t.Errorf("实际结果:%v, 期望值:%v", got, want) // 测试失败输出错误提示
 	}
-}*/
+}
+
+func TestDecode(t *testing.T) {
+	got := Decode("淀粉银花石膏大黄淀粉连翘藿香连翘淀粉银花板蓝根藿香板蓝根大黄淀粉连翘麻黄甘草贯众甘草贯众红景天鱼腥草银花鱼腥草鱼腥草")
+	want := "你好,lhqw"
+	if got != want {
+		t.Errorf("实际结果:%v, 期望值:%v", got, want) // 测试失败输出错误提示
+	}
+}
