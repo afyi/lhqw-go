@@ -1,3 +1,3 @@
-module github.com/afyi/lhqw-go
+module github.com/afyi/lhqwgo
 
 go 1.19

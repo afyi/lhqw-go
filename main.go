@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	core "github.com/afyi/lhqw-go/core"
+	core "github.com/afyi/lhqwgo/core"
 )
 
 var Usage = func() {
